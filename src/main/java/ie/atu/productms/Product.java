@@ -1,13 +1,8 @@
 package ie.atu.productms;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Data
@@ -24,8 +19,73 @@ public class Product {
     @Size(max = 7, message = "ID cannot be more than 7 characters")
     private String productId;
 
-    @NotBlank(message = "Category cannot be blank")
-    private String category;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Category cannot be null")
+    private Category category;
+
+    @Positive(message = "Price must be a positive number")
+    private double price;
+
+    @Min(value = 0, message = "Stock quantity cannot be negative")
+    private int stockQuantity;
+
+    public enum Category {
+        ELECTRONICS, FASHION, HOME, BEAUTY, SPORTS, OUTDOORS;
+    }
+
+    // Getter and Setter methods for 'id'
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    // Getter and Setter methods for 'name'
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Getter and Setter methods for 'productId'
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    // Getter and Setter methods for 'category'
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    // Getter and Setter methods for 'price'
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    // Getter and Setter methods for 'stockQuantity'
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
 
 
 
