@@ -31,9 +31,9 @@ public class ProductService {
     }
 
     @Transactional
-    public Product updateProduct(String employeeId, Product updatedProduct) {
+    public Product updateProduct(String productId, Product updatedProduct) {
         // Check if the product with the given Product ID exists
-        Optional<Product> existingProductOptional = productRepository.findById(updatedProduct.getId());
+        Optional<Product> existingProductOptional = productRepository.findByProductId(productId);
 
         if (existingProductOptional.isPresent()) {
             Product existingProduct = existingProductOptional.get();
@@ -47,7 +47,7 @@ public class ProductService {
             // Save the updated product back to the database
             return productRepository.save(existingProduct);
         } else {
-            throw new IllegalArgumentException("Person with employeeId " + employeeId + " not found");
+            throw new IllegalArgumentException("Product with product ID " + productId + " not found");
         }
     }
 
