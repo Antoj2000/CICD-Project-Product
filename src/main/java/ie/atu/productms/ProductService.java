@@ -1,15 +1,11 @@
 package ie.atu.productms;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.Optional;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,13 +18,22 @@ public class ProductService {
 
     public Product addProduct(Product product)
     {
-        return  productRepository.save(product);
+
+        return productRepository.save(product);
     }
 
     public List<Product> getAllProducts() {
 
         return productRepository.findAll();
     }
+
+    // In the service layer, change the return type to Optional<Product> or Product
+    public Optional<Product> getProductById(String productId) {
+        // Find product by productId (returns Optional)
+        return productRepository.findByProductId(productId);
+    }
+
+
 
     @Transactional
     public Product updateProduct(String productId, Product updatedProduct) {

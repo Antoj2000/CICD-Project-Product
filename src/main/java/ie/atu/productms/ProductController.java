@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/product")
@@ -39,6 +40,21 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAllProducts(){
         List<Product> products = myService.getAllProducts();
         return ResponseEntity.ok(products);  // Returns 200 OK with list of persons
+    }
+
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getProductById(@PathVariable String productId) {
+        // Attempt to get the product by its productId
+        Optional<Product> product = myService.getProductById(productId);
+
+        if (product.isPresent()) {
+            // If the product is found, return a response with product details
+            return ResponseEntity.status(HttpStatus.OK).body(product.get()); // or product.get().getName() for specific fields
+        } else {
+            // If the product is not found, return a 404 NOT FOUND response
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product with Product ID " + productId + " not found.");
+        }
     }
 
     @PutMapping("/{productId}")
