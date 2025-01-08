@@ -1,0 +1,15 @@
+2025-01-08 01:39:58.974922Z jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM PRODUCT CATEGORY [*]HOME"; SQL statement:
+SELECT * FROM PRODUCT CATEGORY HOME [42000-232]
+2025-01-08 01:40:13.098839Z jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM PRODUCT CATEGORY [*]""HOME"""; SQL statement:
+SELECT * FROM PRODUCT CATEGORY "HOME" [42000-232]
+2025-01-08 01:40:20.199707Z jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM PRODUCT CATEGORY [*]'HOME'"; SQL statement:
+SELECT * FROM PRODUCT CATEGORY 'HOME' [42000-232]
+2025-01-08 01:40:36.986776Z jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM PRODUCT CATEGORY [*]FROM HOME"; SQL statement:
+SELECT * FROM PRODUCT CATEGORY FROM HOME [42000-232]
+2025-01-08 01:40:45.096338Z jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CATEGORY" not found; SQL statement:
+SELECT * FROM CATEGORY [42102-232]
