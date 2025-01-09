@@ -29,25 +29,36 @@ public class ProductService {
 
     // In the service layer, change the return type to Optional<Product> or Product
     public Optional<Product> getProductById(String productId) {
-        // Find product by productId (returns Optional)
+
         return productRepository.findByProductId(productId);
     }
 
-
-
     @Transactional
-    public Product updateProduct(String productId, Product updatedProduct) {
+    public Product updateProductStock(String productId) {
         // Check if the product with the given Product ID exists
         Optional<Product> existingProductOptional = productRepository.findByProductId(productId);
 
         if (existingProductOptional.isPresent()) {
             Product existingProduct = existingProductOptional.get();
-            // Update the fields of the existing person with the new values
-            existingProduct.setName(updatedProduct.getName());
-            existingProduct.setProductId(updatedProduct.getProductId());
-            existingProduct.setCategory(updatedProduct.getCategory());
-            existingProduct.setPrice(updatedProduct.getPrice());
-            existingProduct.setStockQuantity(updatedProduct.getStockQuantity());
+            // Deduct stock by 1
+            existingProduct.setStockQuantity(existingProduct.getStockQuantity() - 1);
+
+            // Save the updated product back to the database
+            return productRepository.save(existingProduct);
+        } else {
+            throw new IllegalArgumentException("Product with product ID " + productId + " not found");
+        }
+    }
+
+    @Transactional
+    public Product updateProductInventory(String productId, int stockToAdd) {
+        // Check if the product with the given Product ID exists
+        Optional<Product> existingProductOptional = productRepository.findByProductId(productId);
+
+        if (existingProductOptional.isPresent()) {
+            Product existingProduct = existingProductOptional.get();
+
+            existingProduct.setStockQuantity(existingProduct.getStockQuantity() + stockToAdd);
 
             // Save the updated product back to the database
             return productRepository.save(existingProduct);

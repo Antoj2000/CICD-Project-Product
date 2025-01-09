@@ -39,42 +39,54 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts(){
         List<Product> products = myService.getAllProducts();
-        return ResponseEntity.ok(products);  // Returns 200 OK with list of persons
+        return ResponseEntity.ok(products);  // Returns list of products
     }
-
 
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProductById(@PathVariable String productId) {
-        // Attempt to get the product by its productId
+        // Get the product by its productId
         Optional<Product> product = myService.getProductById(productId);
 
         if (product.isPresent()) {
-            // If the product is found, return a response with product details
+            // If the product is found
             return ResponseEntity.status(HttpStatus.OK).body(product.get()); // or product.get().getName() for specific fields
         } else {
-            // If the product is not found, return a 404 NOT FOUND response
+            // If the product is not found
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product with Product ID " + productId + " not found.");
         }
     }
 
-    @PutMapping("/{productId}")
-    public ResponseEntity<?>updateProduct(@PathVariable String productId, @RequestBody @Valid Product updatedProduct, BindingResult result){
-        if (result.hasErrors()) {
-            List<ErrorDetails>errors = new ArrayList<>();
-            result.getFieldErrors().forEach(error -> {
-                String fieldName = error.getField();
-                String errorMessage = error.getDefaultMessage();
-                errors.add(new ErrorDetails(fieldName, errorMessage));
-            });
-            return ResponseEntity.badRequest().body(errors);
-        }
+    @PutMapping("/add/{productId}")
+    public ResponseEntity<?> updateProductInventory(@PathVariable String productId, @RequestParam int stockToAdd) {
+        try {
+            // Call the service to update the product stock
+            Product updatedProduct = myService.updateProductInventory(productId, stockToAdd);
+            if (updatedProduct == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found with Product ID: " + productId);
+            }
 
-        Product updatedProducts = myService.updateProduct(productId, updatedProduct);
-        if (updatedProducts == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found with Product ID: " + productId);
+            return ResponseEntity.ok(updatedProduct);  // Return the updated product
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product with Product ID " + productId + " not found");
         }
-        return ResponseEntity.ok(updatedProduct);
     }
+
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<?> updateProductStock(@PathVariable String productId) {
+        try {
+            // Call the service to update the product stock
+            Product updatedProduct = myService.updateProductStock(productId);
+
+            if (updatedProduct == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found with Product ID: " + productId);
+            }
+            return ResponseEntity.ok(updatedProduct);  // Return the updated product
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product with Product ID " + productId + " not found");
+        }
+    }
+
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deletePerson(@PathVariable String productId){
